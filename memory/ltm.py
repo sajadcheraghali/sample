@@ -235,7 +235,9 @@ class LTM:
                 try:
                     decision = json.loads(decision_raw)
                 except:
-                    break
+                    print("Invalid JSON from LLM")
+                    print(decision_raw)
+                    return conversations  # fallback
 
                 action = decision["action"]
 

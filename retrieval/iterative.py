@@ -2,31 +2,37 @@ from llm import call_llm
 
 def decide_action(query, group_summary, conversations, search_history):
     prompt = f"""
-You are managing memory retrieval.
+    You are a strict JSON generator.
 
-Query:
-{query}
+    Query:
+    {query}
 
-Current Group Summary:
-{group_summary}
+    Group Summary:
+    {group_summary}
 
-Retrieved Conversations:
-{conversations}
+    Retrieved Conversations:
+    {conversations}
 
-Search History:
-{search_history}
+    Search History:
+    {search_history}
 
-Choose one action:
-- END (if enough information found)
-- JUMP (if another group might be better)
-- REWRITE: <new_query> (if query needs refinement)
+    Respond ONLY in valid JSON.
+    No explanation.
+    No extra text.
 
-Respond in JSON format:
-{{
-  "action": "...",
-  "new_query": "..."
-}}
-"""
+    Example:
+    {{
+      "action": "END",
+      "new_query": ""
+    }}
+
+    Or:
+
+    {{
+      "action": "REWRITE",
+      "new_query": "improved query"
+    }}
+    """
 
     response = call_llm(prompt)
     return response
