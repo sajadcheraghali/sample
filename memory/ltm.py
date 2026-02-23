@@ -233,11 +233,13 @@ class LTM:
                 )
 
                 try:
-                    decision = json.loads(decision_raw)
-                except:
+                    cleaned = re.sub(r"```json|```", "", decision_raw).strip()
+                    decision = json.loads(cleaned)
+                except Exception as e:
                     print("Invalid JSON from LLM")
-                    print(decision_raw)
-                    return conversations  # fallback
+                    print("Raw output:", decision_raw)
+                    print("Cleaned output:", cleaned)
+                    return conversations
 
                 action = decision["action"]
 
@@ -255,5 +257,9 @@ class LTM:
                     break
 
             rounds += 1
+        print("Round:", rounds)
+        print("Current Query:", current_query)
+        print("Selected Group:", group)
+        print("LLM Decision:", decision)
 
         return final_results
